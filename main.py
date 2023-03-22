@@ -101,23 +101,13 @@ if '__main__' == __name__:
     h1.cmd("sysctl -w net.mptcp.enabled=1")
     h2.cmd("sysctl -w net.mptcp.enabled=1")
 
+    # Run final commands for enabling mptcp
+    h1.cmd("ip mptcp limits set subflow 2 add_addr_accepted 2")
+    h2.cmd("ip mptcp limits set subflow 2 add_addr_accepted 2")
+    h2.cmd("ip mptcp endpoint add 10.0.2.2 dev h2-eth0 subflow")
+
     # Start server
     h2.cmd("python3 server.py &")
     
     # Start and print client output
     print(h1.cmd("python3 client.py"))
-
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
