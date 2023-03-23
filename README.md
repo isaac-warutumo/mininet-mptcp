@@ -36,7 +36,7 @@ After completing these steps, you should have a functional Mininet topology with
 
 ### main.py
 
-The main file is in charge of creating and configuring the Mininet network. It executes server.py on the h2-node and subsequently runs client.py on the h1-node.
+The main file is in charge of creating and configuring the Mininet network. It executes _server.py_ on the h2-node and subsequently runs _client.py_ on the h1-node.
 
 ### server.py
 
