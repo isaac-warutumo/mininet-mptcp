@@ -23,7 +23,9 @@ sudo bash setup.sh
 
 3. Reboot your computer after the successful execution of the script.
 
-4. Verify that MPTCP has been installed correctly by executing `main.py`:
+4. Choose the newly installed kernel, `>= 6.3.0-rc2+`, in the GRUB menu during boot
+
+5. Verify that the new MPTCP kernel has been installed correctly by executing `main.py`:
 ```bash
 sudo python3 main.py
 ```
