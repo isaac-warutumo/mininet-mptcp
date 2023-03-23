@@ -30,7 +30,7 @@ def get_network():
                     loss=0)
 
     net.addLink(r1, h2, cls=TCLink,
-                    bw=100,
+                    bw=1000,
                     delay='10ms', 
                     loss=0)
     
@@ -69,6 +69,7 @@ def get_network():
 
 if '__main__' == __name__:
 
+    '''
     # ----- Run single path -----
     print("--- Testing single path ---")
 
@@ -87,6 +88,7 @@ if '__main__' == __name__:
     
     # Start and print client output
     print(h1.cmd("python3 client.py"))
+    '''
 
     # ----- Run multipath-----
     print("--- Testing multipath ---")
@@ -97,14 +99,15 @@ if '__main__' == __name__:
     # Create mininet network
     net, h1, h2 = get_network()
 
-    # Disable mptcp for each node
-    h1.cmd("sysctl -w net.mptcp.enabled=1")
+    # Enable MPTCP and set limits for h1 (client)
     h2.cmd("sysctl -w net.mptcp.enabled=1")
+    h2.cmd("ip mptcp limits set subflows 4 add_addr_accepted 4")
+    h2.cmd("ip mptcp endpoint add 10.0.2.2 dev h2-eth0 signal")
 
-    # Run final commands for enabling mptcp
-    h1.cmd("ip mptcp limits set subflow 2 add_addr_accepted 2")
-    h2.cmd("ip mptcp limits set subflow 2 add_addr_accepted 2")
-    h2.cmd("ip mptcp endpoint add 10.0.2.2 dev h2-eth0 subflow")
+    h1.cmd("sysctl -w net.mptcp.enabled=1")
+    h1.cmd("ip mptcp limits set subflows 4 add_addr_accepted 4")
+    h1.cmd("ip mptcp endpoint add 10.0.0.2 dev h1-eth0 subflow fullmesh")
+    h1.cmd("ip mptcp endpoint add 10.0.1.2 dev h1-eth1 subflow fullmesh")
 
     # Start server
     h2.cmd("python3 server.py &")
