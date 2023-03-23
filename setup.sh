@@ -17,7 +17,7 @@ fi
 echo "Updating package lists..."
 apt-get update
 
-echo "Installing tools..."
+echo "Installing tools (Mininet >= 2.3.0)..."
 apt-get install -y vim python3-pip mininet xterm
 
 echo "Install build deps..."
@@ -29,7 +29,15 @@ pip3 install matplotlib mininet numpy
 echo "Moving up one folder..."
 cd ..
 
-echo "Cloning latest source code for MPTCPv1..."
+echo "Installing latest version of iproute2 (>= 6.2.0)..."
+git clone iproute2
+cd iproute2
+make install
+
+echo "Moving up one folder..."
+cd ..
+
+echo "Cloning latest source code for MPTCPv1 (>= ace20054cd12bf71a678f4ac305e0d76ce495a39)..."
 git clone --depth=1 https://github.com/multipath-tcp/mptcp_net-next
 
 echo "Copying existing kernel .config for modification..."
