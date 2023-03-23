@@ -4,7 +4,7 @@ This repository contains installation scripts and essential documentation for se
 
 ## Topology
 
-![image](https://user-images.githubusercontent.com/32551374/227388100-756203d9-67b2-47a8-91f7-a6e349ce5fd5.png)
+![image](https://user-images.githubusercontent.com/32551374/227388394-631b94c1-bd23-4881-8d55-775c8ba6cbee.png)
 
 ## Setup Instructions
 
