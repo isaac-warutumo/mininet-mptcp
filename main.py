@@ -69,7 +69,6 @@ def get_network():
 
 if '__main__' == __name__:
 
-    '''
     # ----- Run single path -----
     print("--- Testing single path ---")
 
@@ -88,7 +87,6 @@ if '__main__' == __name__:
     
     # Start and print client output
     print(h1.cmd("python3 client.py"))
-    '''
 
     # ----- Run multipath-----
     print("--- Testing multipath ---")
