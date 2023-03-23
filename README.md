@@ -31,3 +31,17 @@ sudo python3 main.py
 ```
 
 After completing these steps, you should have a functional Mininet topology with MPTCPv**1** support.
+
+## Components Overview
+
+### main.py
+
+The main file is in charge of creating and configuring the Mininet network. It executes server.py on the h2-node and subsequently runs client.py on the h1-node.
+
+### server.py
+
+This file sets up a server that attempts to open an MPTCP socket and listens for incoming connections. Once a connection is established with a client, the server sends 100 MB of data as a response.
+
+### client.py
+
+The client script is designed to connect to the server and prepare to receive 100 MB of data. It measures and reports the data transfer characteristics during the process.
