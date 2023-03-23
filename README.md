@@ -1,6 +1,6 @@
 # Simple MPTCP
 
-This repository provides installation scripts and essential documentation to set up a basic Mininet topology using MPTCPv**1**.
+This repository contains installation scripts and essential documentation for setting up a basic Mininet topology that utilizes MPTCPv**1**, built directly from the source code.
 
 ## Setup Instructions
 
