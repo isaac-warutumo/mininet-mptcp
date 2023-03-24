@@ -104,11 +104,24 @@ if '__main__' == __name__:
 
     h1.cmd("sysctl -w net.mptcp.enabled=1")
     h1.cmd("ip mptcp limits set subflows 4 add_addr_accepted 4")
-    h1.cmd("ip mptcp endpoint add 10.0.0.2 dev h1-eth0 subflow fullmesh")
-    h1.cmd("ip mptcp endpoint add 10.0.1.2 dev h1-eth1 subflow fullmesh")
+    h1.cmd("ip mptcp endpoint add 10.0.0.2 dev h1-eth0 fullmesh subflow")
+    h1.cmd("ip mptcp endpoint add 10.0.1.2 dev h1-eth1 fullmesh subflow")
 
     # Start server
     h2.cmd("python3 server.py &")
     
     # Start and print client output
-    print(h1.cmd("python3 client.py"))
+    output = h1.cmd("python3 client.py")
+    print(output)
+
+    try:
+        # Extract mptcp throughput from output
+        mptcp_throughput = float(output.split("\n")[-2].split(' ')[-2])
+    except:
+        mptcp_throughput = 0
+
+    # If total throughput with mptcp was more than 100 Mbps
+    if mptcp_throughput > 100:
+        print("MPTCP is working!")
+    else:
+        print("MPTCP does not seem to be working!")
