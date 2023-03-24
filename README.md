@@ -30,6 +30,31 @@ sudo bash setup.sh
 sudo python3 main.py
 ```
 
+### Expected output
+```
+--- Testing single path ---
+net.mptcp.enabled = 0
+Creating socket...
+Using tcp...
+Connecting to server...
+Receiving data...
+Total time: 8.971327304840088 seconds
+Amount bytes received: 100000000 bytes
+Actual throughput: 89.17 Mbps
+
+--- Testing multipath ---
+net.mptcp.enabled = 1
+Creating socket...
+Using mptcp...
+Connecting to server...
+Receiving data...
+Total time: 5.12033486366272 seconds
+Amount bytes received: 100000000 bytes
+Actual throughput: 156.24 Mbps
+
+MPTCP is working!
+```
+
 After completing these steps, you should have a functional Mininet topology with MPTCPv**1** support.
 
 ## Components Overview
