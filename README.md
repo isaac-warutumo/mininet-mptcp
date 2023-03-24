@@ -73,4 +73,4 @@ The client script is designed to connect to the server and prepare to receive 10
 
 ## Acknowledgements
 
-Special thanks to **Per Hurtig** and **Matthieu Baerts**.
+Special thanks to **Matthieu Baerts** and **Per Hurtig**.
