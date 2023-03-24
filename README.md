@@ -72,6 +72,14 @@ This file sets up a server that attempts to open an MPTCP socket and listens for
 
 The client script is designed to connect to the server and prepare to receive 100 MB of data. It measures and reports the data transfer characteristics during the process.
 
+### setup.sh
+
+The setup script provides developers a convenient way to create an environment for using a custom-built MPTCPv1 kernel. It performs the following tasks:
+
+* Installs required tools and build dependencies
+* Compiles and sets up the latest versions of iproute2 and MPTCPv1
+* Activates the GRUB menu and configures GRUB to default to the most recently booted kernel
+
 ## Reporting Issues
 
 Please do not hesitate to open an issue if you encounter **any** problems.
