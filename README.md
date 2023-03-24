@@ -1,6 +1,6 @@
 # simple_mptcp
 
-This repository contains installation scripts and essential documentation for setting up a basic Mininet topology that utilizes MPTCPv**1**, built directly from the source code.
+This repository contains installation scripts and essential documentation for setting up a basic Mininet topology that utilizes [MPTCPv**1**](https://github.com/multipath-tcp/mptcp_net-next), built directly from the source code.
 
 ## Topology
 
@@ -77,7 +77,7 @@ The client script is designed to connect to the server and prepare to receive 10
 The setup script provides developers a convenient way to create an environment for using a custom-built MPTCPv1 kernel. It performs the following tasks:
 
 * Installs required tools and build dependencies
-* Compiles and sets up the latest versions of iproute2 and MPTCPv1
+* Compiles and sets up the latest versions of [iproute2](https://github.com/shemminger/iproute2) and [MPTCPv1](https://github.com/multipath-tcp/mptcp_net-next)
 * Activates the GRUB menu and configures GRUB to default to the most recently booted kernel
 
 ## Reporting Issues
