@@ -30,7 +30,7 @@ echo "Moving up one folder..."
 cd ..
 
 echo "Installing latest version of iproute2 (>= 6.2.0)..."
-git clone iproute2
+git clone https://github.com/shemminger/iproute2
 cd iproute2
 make install
 
