@@ -73,4 +73,4 @@ The client script is designed to connect to the server and prepare to receive 10
 
 ## Reporting Issues
 
-Please do not hesitate to open an issue if you encounter any problems.
+Please do not hesitate to open an issue if you encounter **any** problems.
