@@ -1,4 +1,4 @@
-# Simple MPTCP
+# simple_mptcp
 
 This repository contains installation scripts and essential documentation for setting up a basic Mininet topology that utilizes MPTCPv**1**, built directly from the source code.
 
