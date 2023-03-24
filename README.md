@@ -23,7 +23,7 @@ sudo bash setup.sh
 
 3. Reboot your computer after the successful execution of the script.
 
-4. Choose the newly installed kernel, `>= 6.3.0-rc2+`, in the GRUB menu during boot
+4. Choose the newly installed kernel under _Advanced options for ubuntu_, `>= 6.3.0-rc2+`, in the GRUB menu during boot
 
 5. Verify that the new MPTCP kernel has been installed correctly by executing `main.py`:
 ```bash
