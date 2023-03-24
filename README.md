@@ -70,3 +70,7 @@ This file sets up a server that attempts to open an MPTCP socket and listens for
 ### client.py
 
 The client script is designed to connect to the server and prepare to receive 100 MB of data. It measures and reports the data transfer characteristics during the process.
+
+## Acknowledgements
+
+Special thanks to **Per Hurtig** and **Matthieu Baerts**.
