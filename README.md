@@ -1,6 +1,6 @@
 # simple_mptcp
 
-This repository contains installation scripts and essential documentation for setting up a basic Mininet topology that utilizes [MPTCPv**1**](https://github.com/multipath-tcp/mptcp_net-next), built directly from the source code.
+This repository contains installation scripts and essential documentation for setting up a basic [Mininet](https://github.com/mininet/mininet) topology that utilizes [MPTCPv**1**](https://github.com/multipath-tcp/mptcp_net-next), built directly from the source code.
 
 ## Topology
 
@@ -8,7 +8,7 @@ This repository contains installation scripts and essential documentation for se
 
 ## Setup Instructions
 
-Follow these steps to set up the Simple MPTCP environment:
+Follow these steps to set up the simple MPTCP environment:
 
 1. Clone the repository:
 ```bash
