@@ -27,6 +27,7 @@ sudo bash setup.sh
 
 5. Verify that the new MPTCP kernel has been installed correctly by executing `main.py`:
 ```bash
+cd scripts
 sudo python3 main.py
 ```
 
