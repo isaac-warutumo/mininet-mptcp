@@ -22,18 +22,21 @@ template = '''
             flex-direction: column;  
             margin-top: 50px;
         }
-        th, td {
-            text-align: center;
-        }
         .table {
             border: 1px solid #dee2e6;
         }
         .table th {
+            text-align: center;
             background-color: #343a40;
             color: white;
         }
-        .table-warning {
-            background-color: #ffe08a;
+        td {
+            border: none !important;
+        }
+        .parameter-column {
+            background-color: #343a40;
+            color: white;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -134,7 +137,7 @@ template = '''
                     }
 
                     if ((cellIndex + 1) <= 3) {  
-                        html += `<td class="border-right-cell" ${style}>${cell === "None" ? "" : cell}</td>`;
+                        html += `<td class="parameter-column" ${style}>${cell === "None" ? "" : cell}</td>`;
                     } else {
                         html += `<td ${style}>${cell === "None" ? "" : cell}</td>`;
                     }
