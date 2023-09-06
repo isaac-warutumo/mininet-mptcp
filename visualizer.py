@@ -43,6 +43,27 @@ template = '''
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
 
+        function get_color(value, min_value, max_value) {
+            let middle_value = 100;
+            let r, g, b;
+
+            if (value < middle_value) {
+                value = 1 - ((middle_value - value) / (middle_value - min_value));
+                r = 255;
+                g = Math.floor(255 * value);
+            } else if (value > 100) {
+                value = 1 - ((value - middle_value) / (max_value - middle_value));
+                r = Math.floor(255 * value);
+                g = 255;
+            } else {
+                r = 255;
+                g = 255;
+            }
+
+            b = 0;
+            return `rgb(${r}, ${g}, ${b})`;
+        }
+
         function buildTable(columns, data) {
             let html = '';
             const totalColumns = columns.length;
@@ -94,14 +115,24 @@ template = '''
 
             // Add data rows
             html += '<tbody>';
+            let numericData = data.slice(1).map(row => row.slice(3)).flat().map(Number).filter(cell => !isNaN(cell));
+            let min_value = Math.min(...numericData);
+            let max_value = Math.max(...numericData);
+            console.log(min_value, max_value);
             for (let rowIndex = 1; rowIndex < data.length; rowIndex++) {
                 const row = data[rowIndex];
                 html += '<tr>';
                 row.forEach((cell, cellIndex) => {
+                    let style = "";
+                    if ((cellIndex + 1) > 3 && !isNaN(cell)) {  // adjust based on your real index
+                        const color = get_color(parseFloat(cell), min_value, max_value);
+                        style = `style="background-color:${color};"`;
+                    }
+
                     if ((cellIndex + 1) <= 3) {  
-                        html += `<td class="border-right-cell">${cell === "None" ? "" : cell}</td>`;
+                        html += `<td class="border-right-cell" ${style}>${cell === "None" ? "" : cell}</td>`;
                     } else {
-                        html += `<td>${cell === "None" ? "" : cell}</td>`;
+                        html += `<td ${style}>${cell === "None" ? "" : cell}</td>`;
                     }
                 });
                 html += '</tr>';
