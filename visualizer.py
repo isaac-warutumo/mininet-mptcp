@@ -45,7 +45,6 @@ template = '''
 
         function buildTable(columns, data) {
             let html = '';
-
             const totalColumns = columns.length;
 
             html += '<thead>';
@@ -76,7 +75,7 @@ template = '''
                 }
             }
             
-            // Handle last column
+            // Handle last column header
             if (prevCol !== null) {
                 html += `<th colspan="${colSpanCount}">${prevCol}</th>`;
             }
@@ -86,15 +85,33 @@ template = '''
 
             // Add data rows
             html += '<tbody>';
+
             data.forEach((row) => {
                 html += '<tr>';
-                row.forEach((cell, index) => {
-                    if (cell !== "None") {
-                        html += '<td>' + cell + '</td>';
+
+                colSpanCount = 1;  // Resetting for data rows
+                for (let i = 0; i < row.length; i++) {
+                    if (row[i] === "None") {
+                        colSpanCount++;
+                        continue;
                     }
-                });
+                    
+                    if (colSpanCount > 1) {
+                        html += `<td colspan="${colSpanCount}"></td>`;
+                        colSpanCount = 1;
+                    }
+
+                    html += `<td>${row[i]}</td>`;
+                }
+
+                // Handle trailing empty cells
+                if (colSpanCount > 1) {
+                    html += `<td colspan="${colSpanCount}"></td>`;
+                }
+
                 html += '</tr>';
             });
+
             html += '</tbody>';
 
             $("#data-table").html(html);
