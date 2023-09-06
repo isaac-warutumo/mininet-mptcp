@@ -78,10 +78,15 @@ template = '''
         }
 
         $(document).ready(function() {
-            fetch_data().then(() => {
-                setInterval(fetch_data, 5000);
-            }).catch((err) => console.log(err));
+            // Try to fetch immediately
+            fetch_data().catch((err) => console.log(err));
+
+            // Then keep trying to fetch every 5000 ms
+            setInterval(() => {
+                fetch_data().catch((err) => console.log(err));
+            }, 5000);
         });
+
     </script>
 </body>
 </html>
