@@ -9,6 +9,7 @@ from pathlib import Path
 import numpy as np
 import datetime
 import time
+import csv
 import os
 
 # ------ Test instance run settings ----
@@ -113,81 +114,10 @@ def sample_mptcp(config, samples):
 
     return sum_mptcp
 
-def rgb_to_hex(r, g, b):
-
-    return '{:02x}{:02x}{:02x}'.format(r, g, b)
-
-def get_color(value, min_value, max_value):
-
-    middle_value = 100
-
-    if value < middle_value:
-
-        value = 1 - ((middle_value - value) / (middle_value - min_value))
-
-        r = 255
-        g = int(255 * value)
-
-    elif value > 100:
-
-        value = 1 - ((value - middle_value) / (max_value - middle_value))
-
-        r = int(255 * value)
-        g = 255
-
-    else:
-
-        r = 255
-        g = 255
-
-    b = 0
-
-    return rgb_to_hex(r, g, b)
-
-# This function takes a two dimensional list and generates a html-page with a table for it
-def generate_table(data):
-
-    html_filename = 'index.html'
-
-    min_value = min(min(row[3:]) for row in data[2:])
-    max_value = max(max(row[3:]) for row in data[2:])
-
-    html = ''
-    html += '<html>' + '\n'
-    html += '<head>' + '\n'
-    html += '\t' + '<meta http-equiv="refresh" content="5">' + '\n'
-    html += '</head>' + '\n'
-    html += '<style>' + '\n'
-    html += 'table, tr, th, td {' + '\n'
-    html += '\t' + 'border:1px solid black;' + '\n'
-    html += '\t' + 'border-collapse: collapse;' + '\n'
-    html += '}' + '\n'
-    html += 'td {' + '\n'
-    html += '\t' + 'display: inline-block' + '\n'
-    html += '}' + '\n'
-    html += '</style>' + '\n'
-    html += '<body>' + '\n'
-    html += '\n'
-    html += '<table style="width:100%">' + '\n'
-    
-    for row_idx, row in enumerate(data):
-        html += '\t' + '<tr>' + '\n'
-        for col_idx, el in enumerate(row):
-            if row_idx > 1 and col_idx > 2:
-                html += '\t\t' + '<th style="background-color:' + get_color(el, min_value, max_value) + ';">' + str(el) + '</th>' + '\n'
-            else:
-                html += '\t\t' + '<th>' + str(el) + '</th>' + '\n'
-        html += '\t' + '<tr>' + '\n'
-
-    html += '</body>' + '\n'
-    html += '</html>' + '\n'
-
-    try:
-        os.remove(html_filename)
-    except:
-        pass
-
-    file_write(html_filename, html)
+def generate_csv(data, filename):
+    with open(filename, 'w', newline='') as csvfile:  
+        csvwriter = csv.writer(csvfile)  
+        csvwriter.writerows(data) 
 
 # This function generates a range of values
 # It interleaves to generated sequences
@@ -368,7 +298,7 @@ def run_experiments():
 
                         data[-1].append(procentage_diff)
 
-                        generate_table(data)
+                        generate_csv(data, "data.csv")  
 
                         count += 1
 
