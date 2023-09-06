@@ -39,7 +39,7 @@ config["client_path_b"]["packet_loss"] = 0
 config["client_path_b"]["queue_size"] = 1000
 
 config["server_path"] = {}
-# Run script/setup.sh to enable 2 Gbps throughput
+# Run networking/setup.sh to enable 2 Gbps throughput
 config["server_path"]["bandwidth"] = 2000
 config["server_path"]["delay"] = 0
 config["server_path"]["packet_loss"] = 0
@@ -81,11 +81,11 @@ def sample_sum_from_config(samples):
 
         net, h1, h2 = initMininet()
 
-        h2.cmd("python3 scripts/server.py &")
+        h2.cmd("python3 networking/server.py &")
 
         time.sleep(0.3)
 
-        res = h1.cmd("python3 scripts/client.py " + str(int(config["bytes_to_transfer"])))
+        res = h1.cmd("python3 networking/client.py " + str(int(config["bytes_to_transfer"])))
         print(res)
         data_value = float(res.split("Total time: ")[-1].split(" ")[0])
 
@@ -260,16 +260,21 @@ def estimated_worst_case_execution_time(estimated_min_time):
 
 def run_experiments():
 
-    config["sample_size"] = 2
+    config["sample_size"] = 1
 
     # ----- Experiment range -----
-    transfer_sizes = generate_interval(10, 100, 2)
+    # Preferred: generate_interval(0.01, 100, 3)
+    transfer_sizes = generate_interval(0.01, 100, 0)
 
-    primary_bws = generate_interval(0.1, 250, 2)
-    primary_delays = generate_interval(0.1, 100, 2)
+    # Preferred: generate_interval(0.01, 1000, 3)
+    primary_bws = generate_interval(0.1, 1000, 0)
+    # Preferred: generate_interval(1, 1000, 3)
+    primary_delays = generate_interval(1, 100, 0)
 
-    secondary_bws = generate_interval(1, 250, 2)
-    secondary_delays = generate_interval(1, 100, 2)
+    # Preferred: generate_interval(0.01, 1000, 3)
+    secondary_bws = generate_interval(0.1, 1000, 0)
+    # Preferred: generate_interval(1, 1000, 3)
+    secondary_delays = generate_interval(1, 100, 0)
 
     estimated_best_case = estimated_min_execution_time(transfer_sizes, primary_bws, primary_delays, secondary_bws, secondary_delays)
     estimated_min_time_in_hours = round(estimated_best_case / (60 * 60), 3)

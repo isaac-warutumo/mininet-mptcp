@@ -83,10 +83,10 @@ if '__main__' == __name__:
     h2.cmd("sysctl -w net.mptcp.enabled=0")
 
     # Start server
-    h2.cmd("python3 server.py &")
+    h2.cmd("python3 networking/server.py &")
     
     # Start and print client output
-    print(h1.cmd("python3 client.py"))
+    print(h1.cmd("python3 networking/client.py"))
 
     # ----- Run multipath-----
     print("--- Testing multipath ---")
@@ -108,10 +108,10 @@ if '__main__' == __name__:
     h1.cmd("ip mptcp endpoint add 10.0.1.2 dev h1-eth1 fullmesh subflow")
 
     # Start server
-    h2.cmd("python3 server.py &")
+    h2.cmd("python3 networking/server.py &")
     
     # Start and print client output
-    output = h1.cmd("python3 client.py")
+    output = h1.cmd("python3 networking/client.py")
     print(output)
 
     try:

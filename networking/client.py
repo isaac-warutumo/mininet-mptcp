@@ -9,6 +9,7 @@ socket.IPPROTO_MPTCP
 if __name__ == '__main__':
 
     data_request_size = int(sys.argv[1])
+    print(data_request_size)
 
     start_time = time.time()
 
