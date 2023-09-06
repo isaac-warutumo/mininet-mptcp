@@ -31,6 +31,7 @@ template = '''
             color: white;
         }
         td {
+            text-align: center;
             border: none !important;
         }
         .parameter-column {
