@@ -42,27 +42,54 @@ template = '''
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
+
         function buildTable(columns, data) {
             let html = '';
 
+            // Add the new header row
             html += '<thead>';
             html += '<tr>';
             html += '<th colspan="3">Parameters</th>';
             html += '<th colspan="15">Network Conditions</th>';
             html += '</tr>';
+            
+            // Add the column headers with colspan
+            html += '<tr>';
+            
+            let prevCol = null;
+            let colSpanCount = 1;
 
-            html += '<thead>';
-            columns.forEach((col, index) => {
-                const colspan = index < 3 ? 1 : 3;
-                html += '<th colspan="' + colspan + '">' + col + '</th>';
-            });
+            for (let i = 0; i < columns.length; i++) {
+                const col = columns[i] === "None" ? "" : columns[i];
+
+                if (prevCol === col) {
+                    colSpanCount++;
+                    continue;
+                } else {
+                    if (prevCol !== null) {
+                        html += `<th colspan="${colSpanCount}">${prevCol}</th>`;
+                    }
+
+                    prevCol = col;
+                    colSpanCount = 1;
+                }
+            }
+            
+            // Handle last column
+            if (prevCol !== null) {
+                html += `<th colspan="${colSpanCount}">${prevCol}</th>`;
+            }
+
+            html += '</tr>';
             html += '</thead>';
 
+            // Add data rows
             html += '<tbody>';
             data.forEach((row) => {
                 html += '<tr>';
                 row.forEach((cell, index) => {
-                    html += '<td>' + cell + '</td>';
+                    const klass = index >= 3 && (cell == 99.6 || cell == 99.5) ? ' class="table-warning"' : '';
+                    html += '<td' + klass + '>' + cell + '</td>';
                 });
                 html += '</tr>';
             });

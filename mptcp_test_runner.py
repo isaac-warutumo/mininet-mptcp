@@ -217,7 +217,7 @@ def run_experiments():
     data.append([])
     data.append([])
 
-    data[0].append('n=' + str(config["sample_size"]))
+    data[0].append('Sample size = ' + str(config["sample_size"]))
     for i in range(2):
         data[0].append('')
 
