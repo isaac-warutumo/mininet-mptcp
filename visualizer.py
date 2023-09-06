@@ -52,35 +52,36 @@ template = '''
             html += `<th colspan="3">Parameters</th>`;
             html += `<th colspan="${totalColumns - 3}">Network Conditions</th>`;
             html += '</tr>';
-            
-            // Add the column headers with colspan
+
+            // Merging column headers with the same name and also span over empty cells
             html += '<tr>';
-            
             let prevCol = null;
             let colSpanCount = 1;
 
             for (let i = 0; i < columns.length; i++) {
                 const col = columns[i] === "None" ? "" : columns[i];
-
-                if (prevCol === col) {
+                
+                if (prevCol === col || col === "") {
                     colSpanCount++;
-                    continue;
                 } else {
-                    if (prevCol !== null) {
+                    if (prevCol) {
                         html += `<th colspan="${colSpanCount}">${prevCol}</th>`;
                     }
-
-                    prevCol = col;
                     colSpanCount = 1;
                 }
-            }
-            
-            // Handle last column header
-            if (prevCol !== null) {
-                html += `<th colspan="${colSpanCount}">${prevCol}</th>`;
+                
+                if (i === columns.length - 1 && col) {
+                    html += `<th colspan="${colSpanCount}">${col}</th>`;
+                }
+                
+                if (col !== "") {
+                    prevCol = col;
+                }
             }
 
             html += '</tr>';
+
+            
             html += '</thead>';
 
             // Add data rows
