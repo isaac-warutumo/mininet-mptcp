@@ -46,11 +46,12 @@ template = '''
         function buildTable(columns, data) {
             let html = '';
 
-            // Add the new header row
+            const totalColumns = columns.length;
+
             html += '<thead>';
             html += '<tr>';
-            html += '<th colspan="3">Parameters</th>';
-            html += '<th colspan="15">Network Conditions</th>';
+            html += `<th colspan="3">Parameters</th>`;
+            html += `<th colspan="${totalColumns - 3}">Network Conditions</th>`;
             html += '</tr>';
             
             // Add the column headers with colspan
