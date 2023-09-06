@@ -44,6 +44,13 @@ template = '''
     <script>
         function buildTable(columns, data) {
             let html = '';
+
+            html += '<thead>';
+            html += '<tr>';
+            html += '<th colspan="3">Parameters</th>';
+            html += '<th colspan="15">Network Conditions</th>';
+            html += '</tr>';
+
             html += '<thead>';
             columns.forEach((col, index) => {
                 const colspan = index < 3 ? 1 : 3;
