@@ -98,8 +98,6 @@ def sample_sum_from_config(samples):
 # Samples a config using single path topology and single path TCP
 def sample_tcp(config, samples):
 
-    print(1)
-
     config["mptcp"] = 0
 
     sum_tcp = sample_sum_from_config(samples)
@@ -108,8 +106,6 @@ def sample_tcp(config, samples):
 
 # Samples a config using multi path topology and MPTCP
 def sample_mptcp(config, samples):
-
-    print(2)
 
     config["mptcp"] = 1
 
