@@ -81,38 +81,31 @@ template = '''
 
             html += '</tr>';
 
+            if (data.length > 0) {
+                const firstRow = data[0];
+                html += '<tr>';
+                firstRow.forEach((cell) => {
+                    html += `<th>${cell === "None" ? "" : cell}</th>`;
+                });
+                html += '</tr>';
+            }
             
             html += '</thead>';
 
             // Add data rows
             html += '<tbody>';
-
-            data.forEach((row) => {
+            for (let rowIndex = 1; rowIndex < data.length; rowIndex++) {
+                const row = data[rowIndex];
                 html += '<tr>';
-
-                colSpanCount = 1;  // Resetting for data rows
-                for (let i = 0; i < row.length; i++) {
-                    if (row[i] === "None") {
-                        colSpanCount++;
-                        continue;
+                row.forEach((cell, cellIndex) => {
+                    if ((cellIndex + 1) <= 3) {  
+                        html += `<td class="border-right-cell">${cell === "None" ? "" : cell}</td>`;
+                    } else {
+                        html += `<td>${cell === "None" ? "" : cell}</td>`;
                     }
-                    
-                    if (colSpanCount > 1) {
-                        html += `<td colspan="${colSpanCount}"></td>`;
-                        colSpanCount = 1;
-                    }
-
-                    html += `<td>${row[i]}</td>`;
-                }
-
-                // Handle trailing empty cells
-                if (colSpanCount > 1) {
-                    html += `<td colspan="${colSpanCount}"></td>`;
-                }
-
+                });
                 html += '</tr>';
-            });
-
+            }
             html += '</tbody>';
 
             $("#data-table").html(html);
