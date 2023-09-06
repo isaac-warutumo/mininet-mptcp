@@ -35,7 +35,7 @@ template = '''
 </head>
 <body>
     <div class="container">
-        <h2 class="text-center mb-4">File Transfer Time Table</h2>
+        <h2 class="text-center mb-4">MPTCPv1 | File Transfer Time Table</h2>
         <table id="data-table" class="table table-striped table-hover"></table>
     </div>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
