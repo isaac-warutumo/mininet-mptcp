@@ -16,6 +16,10 @@ template = '''
             background-color: #f8f9fa;
         }
         .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;  
             margin-top: 50px;
         }
         th, td {
