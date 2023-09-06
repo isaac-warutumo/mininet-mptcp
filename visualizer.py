@@ -88,8 +88,9 @@ template = '''
             data.forEach((row) => {
                 html += '<tr>';
                 row.forEach((cell, index) => {
-                    const klass = index >= 3 && (cell == 99.6 || cell == 99.5) ? ' class="table-warning"' : '';
-                    html += '<td' + klass + '>' + cell + '</td>';
+                    if (cell !== "None") {
+                        html += '<td>' + cell + '</td>';
+                    }
                 });
                 html += '</tr>';
             });
