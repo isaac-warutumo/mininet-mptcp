@@ -55,8 +55,7 @@ template = '''
             data.forEach((row) => {
                 html += '<tr>';
                 row.forEach((cell, index) => {
-                    const klass = index >= 3 && (cell == 99.6 || cell == 99.5) ? ' class="table-warning"' : '';
-                    html += '<td' + klass + '>' + cell + '</td>';
+                    html += '<td>' + cell + '</td>';
                 });
                 html += '</tr>';
             });
@@ -92,21 +91,32 @@ template = '''
 </html>
 '''
 
-@app.errorhandler(500)
-def internal_error(exception):
-    app.logger.error(exception)
-    return render_template_string('<p>An internal server error occurred.</p>'), 500
-
 @app.route("/")
 def home():
     return render_template_string(template)
 
 @app.route("/data")
 def get_data():
-    df = pd.read_csv('data.csv')
-    df = df.fillna('None')  
+    # Read the CSV file without headers
+    df = pd.read_csv('data.csv', header=None)
+    df = df.fillna('None')
+
+    # Assign new headers based on unique entries in the first row
+    headers = []
+    for col in df.iloc[0]:
+        if headers.count(col) > 0:
+            headers.append(col)  # keep duplicate as is
+        else:
+            headers.append(col if 'Unnamed' not in col else 'None')
+
+    # Set new headers and drop the first row
+    df.columns = headers
+    df = df[1:]
+
+    # Convert DataFrame to list of lists and list of columns
     data = df.values.tolist()
     columns = df.columns.values.tolist()
+
     return jsonify({'columns': columns, 'data': data})
 
 if __name__ == "__main__":
