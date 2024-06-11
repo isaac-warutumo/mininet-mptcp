@@ -14,9 +14,11 @@ if __name__ == '__main__':
     start_time = time.time()
 
     try:
+        print("try  mptcp...")
         client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM, 262)
         print("Using mptcp...")
     except:
+        print(" mptcp failed...")
         client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         print("Using tcp...")
 

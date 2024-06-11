@@ -1,4 +1,4 @@
-from mininet.link import Link, TCLink,Intf
+from mininet.link import Link, TCLink, Intf
 from mininet.log import setLogLevel
 from subprocess import Popen, PIPE
 from mininet.clean import Cleanup
@@ -12,28 +12,16 @@ import time
 import os
 
 def get_network():
-
     net = Mininet(link=TCLink)
 
     h1 = net.addHost('h1')
     h2 = net.addHost('h2')
     r1 = net.addHost('r1')
 
-    net.addLink(r1, h1, cls=TCLink,
-                    bw=100,
-                    delay='10ms', 
-                    loss=0)
+    net.addLink(r1, h1, cls=TCLink, bw=100, delay='10ms', loss=0, r2q=5)
+    net.addLink(r1, h1, cls=TCLink, bw=100, delay='10ms', loss=0, r2q=5)
+    net.addLink(r1, h2, cls=TCLink, bw=1000, delay='10ms', loss=0, r2q=5)
 
-    net.addLink(r1, h1, cls=TCLink,
-                    bw=100,
-                    delay='10ms', 
-                    loss=0)
-
-    net.addLink(r1, h2, cls=TCLink,
-                    bw=1000,
-                    delay='10ms', 
-                    loss=0)
-    
     net.build()
 
     r1.cmd("ifconfig r1-eth0 0")
@@ -69,6 +57,9 @@ def get_network():
 
 if '__main__' == __name__:
 
+    # Ensure the pcap directory exists
+    os.makedirs("pcap", exist_ok=True)
+
     # ----- Run single path -----
     print("--- Testing single path ---")
 
@@ -82,13 +73,23 @@ if '__main__' == __name__:
     h1.cmd("sysctl -w net.mptcp.enabled=0")
     h2.cmd("sysctl -w net.mptcp.enabled=0")
 
+    # Start tcpdump on h1
+    h1.cmd('tcpdump -i h1-eth0 -w pcap/h1_eth0_single_path.pcap &')
+    h1.cmd('tcpdump -i h1-eth1 -w pcap/h1_eth1_single_path.pcap &')
+    h1.cmd('tcpdump -i any -w pcap/h1_single_path.pcap &')
+
     # Start server
     h2.cmd("python3 networking/server.py &")
-    
-    # Start and print client output
-    print(h1.cmd("python3 networking/client.py"))
 
-    # ----- Run multipath-----
+    # Start and print client output with argument
+    print(h1.cmd("python3 networking/client.py 10000000"))
+
+    # Stop tcpdump on h1
+    h1.cmd('pkill -f "tcpdump -i h1-eth0"')
+    h1.cmd('pkill -f "tcpdump -i h1-eth1"')
+    h1.cmd('pkill -f "tcpdump -i any"')
+
+    # ----- Run multipath -----
     print("--- Testing multipath ---")
 
     # Enable mptcp
@@ -107,12 +108,22 @@ if '__main__' == __name__:
     h1.cmd("ip mptcp endpoint add 10.0.0.2 dev h1-eth0 fullmesh subflow")
     h1.cmd("ip mptcp endpoint add 10.0.1.2 dev h1-eth1 fullmesh subflow")
 
+    # Start tcpdump on h1
+    h1.cmd('tcpdump -i h1-eth0 -w pcap/h1_eth0_multipath.pcap &')
+    h1.cmd('tcpdump -i h1-eth1 -w pcap/h1_eth1_multipath.pcap &')
+    h1.cmd('tcpdump -i any -w pcap/h1_multipath.pcap &')
+
     # Start server
     h2.cmd("python3 networking/server.py &")
-    
-    # Start and print client output
-    output = h1.cmd("python3 networking/client.py")
+
+    # Start and print client output with argument
+    output = h1.cmd("python3 networking/client.py 10000000")
     print(output)
+
+    # Stop tcpdump on h1
+    h1.cmd('pkill -f "tcpdump -i h1-eth0"')
+    h1.cmd('pkill -f "tcpdump -i h1-eth1"')
+    h1.cmd('pkill -f "tcpdump -i any"')
 
     try:
         # Extract mptcp throughput from output
@@ -120,8 +131,17 @@ if '__main__' == __name__:
     except:
         mptcp_throughput = 0
 
+    print("MPTCP throughput:")
+    print(mptcp_throughput)
+
     # If total throughput with mptcp was more than 100 Mbps
-    if mptcp_throughput > 100:
+    if (mptcp_throughput > 100):
         print("MPTCP is working!")
     else:
         print("MPTCP does not seem to be working!")
+
+    # Start Mininet CLI for further manual testing if needed
+    CLI(net)
+
+    # Clean up Mininet
+    net.stop()
