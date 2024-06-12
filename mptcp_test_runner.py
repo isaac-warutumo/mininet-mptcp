@@ -20,7 +20,7 @@ config["mptcp"] = 1
 
 config["system_variables"] = None
 
-# Default 1 Mb
+# Default 100 Mb
 config["bytes_to_transfer"] = 100 * 1000 ** 2
 
 config["sample_size"] = 2
@@ -203,12 +203,14 @@ def run_experiments():
     secondary_delays = generate_interval(1, 100, 0)
 
     estimated_best_case = estimated_min_execution_time(transfer_sizes, primary_bws, primary_delays, secondary_bws, secondary_delays)
+   
     estimated_min_time_in_hours = round(estimated_best_case / (60 * 60), 3)
     print("Estimated best case execution time: " + str(estimated_min_time_in_hours) + " hours")
 
     estimated_worst_case = estimated_worst_case_execution_time(estimated_best_case)
     estimated_max_time_in_hours = round(estimated_worst_case / (60 * 60), 3)
     print("Estimated worst case execution time: " + str(estimated_max_time_in_hours) + " hours")
+
 
     count = 0
     total = len(transfer_sizes) * len(primary_bws) * len(primary_delays) * len(secondary_bws) * len(secondary_delays)

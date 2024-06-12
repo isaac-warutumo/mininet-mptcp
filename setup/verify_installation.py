@@ -18,12 +18,12 @@ def get_network():
     h2 = net.addHost('h2')
     r1 = net.addHost('r1')
 
-    net.addLink(r1, h1, cls=TCLink, bw=100, delay='10ms', loss=0, r2q=5)
-    net.addLink(r1, h1, cls=TCLink, bw=100, delay='10ms', loss=0, r2q=5)
-    net.addLink(r1, h2, cls=TCLink, bw=1000, delay='10ms', loss=0, r2q=5)
+    net.addLink(r1, h1, cls=TCLink, bw=100, delay='10ms', loss=0)
+    net.addLink(r1, h1, cls=TCLink, bw=100, delay='10ms', loss=0)#, r2q=5)
+    net.addLink(r1, h2, cls=TCLink, bw=1000, delay='10ms', loss=0)#, r2q=5)
 
     net.build()
-
+    #set ip addresses to zero - why?
     r1.cmd("ifconfig r1-eth0 0")
     r1.cmd("ifconfig r1-eth1 0")
     r1.cmd("ifconfig r1-eth2 0")
@@ -32,6 +32,7 @@ def get_network():
     h1.cmd("ifconfig h1-eth1 0")
     h2.cmd("ifconfig h2-eth0 0")
 
+    #enable ip forwarding on the router
     r1.cmd("echo 1 > /proc/sys/net/ipv4/ip_forward")
 
     r1.cmd("ifconfig r1-eth0 10.0.0.1 netmask 255.255.255.0")
@@ -118,6 +119,7 @@ if '__main__' == __name__:
 
     # Start and print client output with argument
     output = h1.cmd("python3 networking/client.py 10000000")
+    print("output form client.py is:")
     print(output)
 
     # Stop tcpdump on h1
@@ -125,15 +127,28 @@ if '__main__' == __name__:
     h1.cmd('pkill -f "tcpdump -i h1-eth1"')
     h1.cmd('pkill -f "tcpdump -i any"')
 
+    # try:I
+    #     # Extract mptcp throughput from output
+    #     mptcp_throughput = float(output.split("\n")[-2].split(' ')[-2])
+    # except:
+    #     mptcp_throughput = 0
     try:
-        # Extract mptcp throughput from output
-        mptcp_throughput = float(output.split("\n")[-2].split(' ')[-2])
-    except:
+        print("output start:")
+        print(output)
+        print("output end")
+        lines = output.split("\n")
+        
+        total_time = float(lines[-3].split(' ')[-2])
+        print("total_time: {}".format(total_time))
+        bytes_received = int(lines[-2].split(' ')[-1])
+        print("bytes_received: {}".format(bytes_received))
+        mptcp_throughput = (bytes_received * 8) / (total_time * 1e6)  # Through=put in Mbps
+        print("mptcp_throughput: {}".format(mptcp_throughput))
+    except (IndexError, ValueError):
         mptcp_throughput = 0
 
-    print("MPTCP throughput:")
-    print(mptcp_throughput)
-
+    print("MPTCP throughput:{}".format(mptcp_throughput))
+    
     # If total throughput with mptcp was more than 100 Mbps
     if (mptcp_throughput > 100):
         print("MPTCP is working!")

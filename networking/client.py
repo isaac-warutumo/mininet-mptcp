@@ -16,22 +16,22 @@ if __name__ == '__main__':
     try:
         print("try  mptcp...")
         client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM, 262)
-        print("Using mptcp...")
+        print("Using mptcp succedded...")
     except:
         print(" mptcp failed...")
         client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         print("Using tcp...")
 
     client_socket.settimeout(None)
-
+    
     buffer_size = 65536  # Adjust this value as needed
     client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, buffer_size)
     client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, buffer_size)
-
+    
     client_socket.connect(("10.0.2.2", 12345))
 
     packed = struct.pack("<Q", data_request_size)
-
+    
     client_socket.sendall(packed)
 
     amount_received = 0
